@@ -1,0 +1,15 @@
+Edita el ERD que construiste en la actividad para incluir estos nuevos detalles:
+
+_______________________  + ----------------<-  ____________________  + -----------------<-  _____________________
+|     Clientes        |                        |    Cuentas       |                         |    Transacciones  |
+|_____________________|                        |__________________|                         |___________________|
+| Cliente_ id (PK)    | UUID                   | Cuenta_id (PK)   | UUID                    | Tipo              |
+| Nombre              | Obligatorio            | Cliente_id (PK)  | UUID                    | Fecha_exacta      | Automático
+| Correo              | Único                  | No. Venta        | UUID                    | Cuenta_destino    | Referencia
+| No.Telefono         | Único                  | Moneda           |                         | Monto (FK)        | Mayor a 0
+| Fecha de nacimiento | Obligatorio            | Tipo de cuenta   |                         | Estado            |
+| No.Identificación   | UUID                   | Saldo actual     | No negativo             |___________________|
+|_____________________|                        | Límite de cuenta |
+                                               |__________________|
+
+Nota: El UUID en pocas palabras es un identificador único aleatorio. 
