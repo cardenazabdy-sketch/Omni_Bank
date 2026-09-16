@@ -1,0 +1,25 @@
+Expected Result
+El estudiante confeccionará sin errores sintácticos de PostgreSQL dos scripts independientes para inicializar los DOMAINs empresariales ordenados (monto_financiero y texto_obligatorio) garantizando las comprobaciones algebraicas y de limpieza textual por defecto mediante cláusulas de constraint (CHECK).
+
+Reference Solution
+1. Script SQL para Dominios Bancarios de OmniBank
+-- Declaración del Dominio para blindaje monetario universal
+CREATE DOMAIN monto_financiero AS NUMERIC(15, 2)
+    CHECK (VALUE >= 0.00);
+
+-- Declaración del Dominio para textos que repelen espacios en blanco o cadenas vacías ilegales
+CREATE DOMAIN texto_obligatorio AS VARCHAR(100)
+    CHECK (VALUE <> '' AND LENGTH(TRIM(VALUE)) > 0);
+2. Identificación Transversal en Columnas
+El Dominio monto_financiero impactará positivamente y reemplazará al tipo nativo en al menos estas 3 columnas decisivas de nuestra arquitectura bancaria:
+
+La columna saldo_actual dentro de la tabla Cuentas.
+La columna limite_credito dentro de la tabla Cuentas.
+La columna monto_tx dentro de la tabla Transacciones.
+
+
+Common Valid Variations
+Utilizar una longitud algo más generosa en texto_obligatorio (ej. VARCHAR(150) o VARCHAR(255)), lo cual es perfectamente aceptable para acoger nombres mercantiles muy largos.
+Emplear funciones alternativas o equivalentes en SQL como CHECK (TRIM(VALUE) <> '') o expresiones regulares directas en lugar de LENGTH(TRIM(VALUE)) > 0.
+Common Mistakes
+Ovidar anteponer la palabra clave VALUE en el interior de los paréntesis de CHECK: Escribir en falso sintáctico CHECK (NUMERIC >= 0) o tratar de mencionar un nombre temporal arbitrario romperá instantáneamente la compilación al requerirse de manera estricta y especial el término reservado VALUE para referirse al contenido futuro a validar por el dominio.
