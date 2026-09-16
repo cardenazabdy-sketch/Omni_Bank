@@ -1,0 +1,4 @@
+El auditor tiene razón, porque el saldo se puede calcular sumando todas las transacciones de una cuenta, por eso guardar el saldo_actual puede considerarse un dato repetido o derivado según la normalización estricta.
+Si se tuvieran 250,000 transacciones, PostgreSQL tendría que hacer la misma suma una y otra vez, lo que podría hacer que el servidor tardara más y que no se cumpliera con la velocidad esperada.
+Por eso, en OmniBank se mantiene saldo_actual, ya que hace que el sistema sea más rápido y evita tener que sumar todas las transacciones cada vez. Cuando se hace una transacción, 
+el sistema actualiza el saldo en ese momento y el ACID ayuda a que los cambios se hagan correctamente y sin errores.
