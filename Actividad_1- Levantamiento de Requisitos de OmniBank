@@ -1,0 +1,12 @@
+Lista de Entidades (Mínimo 3):
+1.Clientes
+2.Cuenta
+3.Transacciones
+
+Lista de Requerimientos Funcionales (RF):
+1.Nombre completo, correo electrónico, número de teléfono, fecha de nacimiento y identificación fiscal (Tax ID).
+2.Registrar el número de cuenta, la moneda, tipo de cuenta, saldo actual y límite de crédito.
+3. Registrar cuenta de origen, el guardo de monto, tipo de transacción y la fecha.
+
+La restricción de unicidad identificada:
+Sería el correo electrónico único y la identificación fiscal (Tax ID) ya que no se puede repetir.
