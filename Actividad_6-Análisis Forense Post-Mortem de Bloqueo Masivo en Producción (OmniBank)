@@ -1,0 +1,19 @@
+1. La Raíz computacional (El Bloqueo Exclusivo):
+La causa del problema fue ejecutar directamente el ALTER TABLE sobre core.transactions. PostgreSQL tuvo que revisar las 75 millones de filas históricas para comprobar que cumplieran con el nuevo CHECK. Durante este proceso tomó un AccessExclusiveLock, que es el bloqueo más restrictivo y entra en conflicto con las operaciones normales de lectura y escritura.
+Como resultado, las consultas, inserciones y actualizaciones provenientes de la aplicación, backend y cajeros quedaron esperando mientras terminaba la validación. Debido al tamaño de la tabla, el proceso duró aproximadamente 14 minutos, provocando la acumulación de solicitudes y los errores 504 Gateway Timeout. Por lo tanto, la causa raíz fue realizar una validación completa del histórico con un bloqueo exclusivo durante un periodo de alta actividad.
+
+2. El Patrón Arquitectónico de Solución en Dos Fases (NOT VALID):
+
+Paso 1: Adición sin bloqueo de escaneo (NOT VALID): 
+ALTER TABLE core.transactions (
+   ADD CONSTRAINT chk_transactions_description_valid 
+   CHECK (LENGTH(TRIM(description)) >= 5) NOT VALID;
+);
+Con esto, PostgreSQL no revisa las 75 millones de filas existentes en ese momento, la regla queda activa para las nuevas inserciones y actualizaciones, evitando que entren datos que no cumplan la condición.
+
+
+Paso 2: La Validación Pasiva Posterior (VALIDATE CONSTRAINT):
+ALTER TABLE core.transactions (
+      VALIDATE CONSTRAINT chk_transactions_description_valid;
+);
+Este comando revisa las filas antiguas que quedaron pendientes. A diferencia del primer ALTER TABLE, utiliza un bloqueo SHARE UPDATE EXCLUSIVE, que es menos restrictivo y permite que las operaciones normales continúen mientras se realiza la validación.
