@@ -1,0 +1,15 @@
+3 Setencias SQL:
+CREATE DATABASE moneda_tipo AS NUMERIC (USD, EUR, MXN)
+CREATE TYPE tipo_cuenta AS ENUM (CHECKING, SAVINGS, CREDIT)
+CREATE DOMAIN tipo_transaccional AS ENUM (DEPOSIT, WITHRAWAL, TRANSFER)
+
+Correción de tipos nativos y especificación relacional:
+
+    [Cuentas]                                               [Clientes]                                     [Transacciones]
+Cuenta_id (PK): UUID                                  Cliente_id (PK): UUID                             Tipo_transaccion: UUID
+Cliente_id (PK): UUID                                 Nombre: VARCHAR                                   Fecha_exacta: TIMESTAMPTZ
+No.Venta: UUID                                        Correo: VARCHAR                                   Cuenta_destino (FK): Único
+Moneda: Tipo_moneda (ENUM)                            No.Telefono: DOMAIN                               Monto (FK): VARCHAR
+Tipo_cuenta: ENUM                                     Fecha_nacimiento: DATE                            Estado: VARCHAR
+Saldo_actual: NUMERIC                                 No.Identificación: UUID
+Limite_credito
