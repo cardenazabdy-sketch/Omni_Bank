@@ -5,11 +5,28 @@ CREATE DOMAIN tipo_transaccional AS ENUM (DEPOSIT, WITHRAWAL, TRANSFER)
 
 Correción de tipos nativos y especificación relacional:
 
-    [Cuentas]                                               [Clientes]                                     [Transacciones]
-Cuenta_id (PK): UUID                                  Cliente_id (PK): UUID                             Tipo_transaccion: UUID
-Cliente_id (PK): UUID                                 Nombre: VARCHAR                                   Fecha_exacta: TIMESTAMPTZ
-No.Venta: UUID                                        Correo: VARCHAR                                   Cuenta_destino (FK): Único
-Moneda: Tipo_moneda (ENUM)                            No.Telefono: DOMAIN                               Monto (FK): VARCHAR
-Tipo_cuenta: ENUM                                     Fecha_nacimiento: DATE                            Estado: VARCHAR
-Saldo_actual: NUMERIC                                 No.Identificación: UUID
+     [Cuentas]                                               
+Cuenta_id (PK): UUID                                  
+Cliente_id (PK): UUID                                 
+No.Venta: UUID                                       
+Moneda: Tipo_moneda (ENUM)                            
+Tipo_cuenta: ENUM                                 
+Saldo_actual: NUMERIC                               
 Limite_credito
+
+
+     [Clientes]  
+Cliente_id (PK): UUID 
+Nombre: VARCHAR 
+Correo: VARCHAR
+No.Telefono: DOMAIN 
+Fecha_nacimiento: DATE 
+No.Identificación: UUID
+
+
+    [Transacciones]
+Tipo_transaccion: UUID
+Fecha_exacta: TIMESTAMPTZ
+Cuenta_destino (FK): Único
+Monto (FK): VARCHAR
+Estado: VARCHAR
