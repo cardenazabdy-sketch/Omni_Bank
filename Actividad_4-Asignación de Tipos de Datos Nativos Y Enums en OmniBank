@@ -10,7 +10,7 @@ Cuenta_id (PK): UUID
 Cliente_id (PK): UUID                                 
 No.Venta: UUID                                       
 Moneda: Tipo_moneda (ENUM)                            
-Tipo_cuenta: ENUM                                 
+Tipo_cuenta: ENUM                
 Saldo_actual: NUMERIC                               
 Limite_credito
 
