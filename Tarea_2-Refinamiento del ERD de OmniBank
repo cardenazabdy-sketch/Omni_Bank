@@ -1,15 +1,49 @@
 Edita el ERD que construiste en la actividad para incluir estos nuevos detalles:
 
-_______________________  + ----------------<-  ____________________  + -----------------<-  _____________________
-|     Clientes        |                        |    Cuentas       |                         |    Transacciones  |
-|_____________________|                        |__________________|                         |___________________|
-| Cliente_ id (PK)    | UUID                   | Cuenta_id (PK)   | UUID                    | Tipo              |
-| Nombre              | Obligatorio            | Cliente_id (PK)  | UUID                    | Fecha_exacta      | Automático
-| Correo              | Único                  | No. Venta        | UUID                    | Cuenta_destino    | Referencia
-| No.Telefono         | Único                  | Moneda           |                         | Monto (FK)        | Mayor a 0
-| Fecha de nacimiento | Obligatorio            | Tipo de cuenta   |                         | Estado            |
-| No.Identificación   | UUID                   | Saldo actual     | No negativo             |___________________|
-|_____________________|                        | Límite de cuenta |
-                                               |__________________|
+_______________________    
+|     Clientes        |                       
+|_____________________|                        
+| Cliente_ id (PK)    | UUID                   
+| Nombre              | Obligatorio            
+| Correo              | Único                  
+| No.Telefono         | Único                  
+| Fecha de nacimiento | Obligatorio            
+| No.Identificación   | UUID                   
+|_____________________|                     
+
++ ----------------<-                                  
+
+ _____________________
+|     Cuentas         |                       
+|_____________________|                        
+| Cuenta_id (PK)      | UUID                   
+| Cliente_id (PK)     | UUID                    
+| No. Venta           | UUID                    
+| Moneda              | 
+| Tipo de cuenta      |      
+| Saldo actual        | No.Negativo
+| Límite de cuenta    |                   
+|_____________________|                     
+
++ ----------------<-                                   
+
+ _____________________
+|    Transacciones    |                       
+|_____________________|                        
+| Tipo_transacción    | UUID                   
+| Fecha_exacta        | Automático                  
+| Cuenta_destino      | Único                  
+| Monto (FK)          | Mayor a 0                
+| Estado              |      
+|_____________________|
+
+
+
+
+
+
+
+
+
 
 Nota: El UUID en pocas palabras es un identificador único aleatorio. 
