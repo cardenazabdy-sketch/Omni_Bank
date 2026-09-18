@@ -1,0 +1,22 @@
+1.	El Análisis Crítico del Anti-Patrón "Read-Before-Write":
+
+El uso de SELECT antes de decidir si se hace un INSERT o un UPDATE no es una buena práctica para este tipo de cargas masivas y debe evitarse en el backend. 
+Por cada registro se realizan dos operaciones y dos viajes entre la aplicación y PostgreSQL, lo que aumenta bastante la latencia cuando se procesan hasta 1 millón de registros.
+El problema también se vuelve más grave cuando existen varios servidores procesando información al mismo tiempo, pueden ocurrir condiciones de carrera. 
+Por ejemplo, dos procesos pueden consultar el mismo correo y comprobar que no existe, para después intentar insertarlo al mismo tiempo, provocando un conflicto con la restricción UNIQUE,
+por eso, es mejor utilizar ON CONFLICT, dejando que PostgreSQL controle directamente si debe actualizar el registro.
+
+2.	La Solución Definitiva: El Comando Idempotente de Alta Densidad (UPSERT):
+
+NSERT INTO core.customers (first_name, last_name, email, phone_number)
+VALUES 
+    ('Jane', 'Smith', 'jane.smith@email.com', '555-0200')
+
+ON CONFLICT (email) 
+DO UPDATE SET 
+
+    first_name   = EXCLUDED.first_name,
+    last_name    = EXCLUDED.last_name,
+    phone_number = EXCLUDED.phone_number,
+  
+RETURNING customer_id, email;
