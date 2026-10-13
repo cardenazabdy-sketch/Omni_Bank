@@ -35,3 +35,26 @@ _______________________
 | Monto (FK)          | NUMERIC, mayor a 0                
 | Estado              | VARCHAR
 |_____________________|
+
+Correccion
+Aprendí que tengo que agregar los datos que necesita cada tabla y indicar qué tipo de dato es cada uno, pero poco a poco estoy aprendiendo a diferenciar las llaves PK y FK.
+
+Reference Solution
+
+[Clientes] 1 ------------ N [Cuentas]
+- cliente_id (PK, UUID)       - cuenta_id (PK, UUID)
+- nombre                      - cliente_id (FK, UUID)
+- correo                      - moneda
+- telefono                    - tipo_cuenta
+- fecha_nacimiento            - saldo_actual (CHECK: >= 0)
+- tax_id (UNIQUE)             - limite_credito
+- is_active (Soft Delete)     - updated_at (Timestamp NFR)
+
+                   (Cuenta Origen)
+[Cuentas] 1 ------------------------- N [Transacciones]
+                                          - transaccion_id (PK, UUID)
+                   (Cuenta Destino)       - from_account (FK, UUID -> Cuentas)
+[Cuentas] 1 ------------------------- N   - to_account (FK, UUID -> Cuentas)
+                                          - monto
+                                          - tipo_transaccion
+                                          - fecha_completada
