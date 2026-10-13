@@ -31,3 +31,19 @@ El Dominio monto_financiero impactará positivamente y reemplazará al tipo nati
 La columna saldo_actual dentro de la tabla Cuentas.
 La columna limite_credito dentro de la tabla Cuentas.
 La columna monto_tx dentro de la tabla Transacciones.
+
+
+
+Correcion
+Aprendí un poco sobre cómo usar NOT EXISTS para encontrar cuentas activas que no tienen depósitos y compararlas con las cuentas que sí tienen movimientos, aunque todavía me confundo un poco al revisar los resultados.
+
+
+Reference Solution
+
+SELECT a.account_number, a.account_type
+FROM core.accounts a
+LEFT JOIN core.transactions t ON t.account_id = a.account_id AND t.tx_type = 'DEPOSIT'
+WHERE a.is_active AND t.transaction_id IS NULL
+ORDER BY a.account_number;
+
+Lectura de la solución: El catálogo de productos solicita una lista más operativa: cuentas activas que aún no registran un depósito. La actividad ya estableció cómo expresar ausencia; ahora la tarea aplica esa técnica a un tipo de evento concreto y conserva la comparación de pares de movimientos como evidencia.
