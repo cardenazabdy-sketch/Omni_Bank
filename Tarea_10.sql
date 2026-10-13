@@ -25,3 +25,28 @@ ORDER BY a.account_number;
 
 
 --3.Explicación: Una cuenta con eventos por menos de 300 quedaría fuera del segmento porque su volumen registrado no llega a 300, mientras que una cuenta sin eventos permanecería porque tiene cero movimientos y cumple con  la condición COUNT(t.transaction_id) = 0 en el HAVING.
+
+
+Correcion
+
+Aprendí más o menos que AVG ignora los NULL, pero con COALESCE los toma como cero y que HAVING permite elegir las cuentas que cumplen las condiciones.
+
+
+
+Reference Solution
+
+WITH sample(x) AS (VALUES (NULL::numeric),(10000::numeric),(0::numeric),(0::numeric))
+SELECT ROUND(AVG(x),2) AS ignores_null,
+       ROUND(AVG(COALESCE(x,0)),2) AS treats_null_as_zero
+FROM sample;
+
+SELECT c.email,a.account_number,a.balance AS stored_balance,
+       COUNT(t.transaction_id) AS movement_count,
+       COALESCE(SUM(t.amount),0) AS recorded_gross_volume
+FROM core.customers c JOIN core.accounts a USING (customer_id)
+LEFT JOIN core.transactions t USING (account_id)
+WHERE a.account_type='CREDIT' AND a.is_active
+GROUP BY c.customer_id,c.email,a.account_id,a.account_number,a.balance
+HAVING COALESCE(SUM(t.amount),0)>=300 OR COUNT(t.transaction_id)=0
+ORDER BY recorded_gross_volume DESC;
+Lectura de la solución: La revisión crediticia necesita un ejemplo en el que AVG ignore un NULL de forma visible, además de una fila de prueba para CREDIT. El objetivo es explicar el denominador real de AVG y enlazarlo con el reporte agregado construido en la actividad, no inventar un límite crediticio que el esquema no guarda.
