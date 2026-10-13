@@ -1,0 +1,12 @@
+1.El Análisis Crítico del Anti-Patrón "Read-Before-Write":
+Hay que evitar hacer primero un SELECT y luego un INSERT/UPDATE, porque son consultas de más y hacen que el sistema vaya más lento y si varios usuarios lo hacen al mismo tiempo, pueden salir errores o datos repetidos.
+
+2.La Solución Definitiva: El Comando Idempotente de Alta Densidad (UPSERT):
+NSERT INTO core.customers (first_name, last_name, email, phone_number)
+VALUES ('Jane', 'Smith', 'jane.smith@email.com', '555-0200')
+ON CONFLICT (email) 
+DO UPDATE SET 
+    first_name   = EXCLUDED.first_name,
+    last_name    = EXCLUDED.last_name,
+    phone_number = EXCLUDED.phone_number,
+RETURNING customer_id, email;
